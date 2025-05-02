@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TapQuiz - Projeto Educacional WEB</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
+  <!-- Modelo MediaPipe Hands -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/hand-pose-detection"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands"></script>
+</head>
+<body>
+  <!-- Título do Projeto -->
+  <h1 id="titulo-projeto">TapQuiz</h1>
+  <!-- Webcam -->
+  <video id="video" autoplay playsinline></video>
+  <!-- Canvas para desenhar os pontos -->
+  <canvas id="canvas"></canvas>
+  <!-- Painel de Botões -->
+  <div class="control-panel">
+    <button id="btn-iniciar">Iniciar</button>
+    <button id="btn-config">Configurações</button>
+  </div>
+  <!-- Resultado da contagem -->
+  <p id="contador-dedos">Dedos levantados: 0</p>
+  <script src="script.js"></script>
+</body>
+</html>
