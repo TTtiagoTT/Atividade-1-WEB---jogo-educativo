@@ -1,3 +1,101 @@
-pergunta,opcao1,opcao2,opcao3,opcao4,correta,dificuldade
-Qual é a capital do Brasil?,São Paulo,Rio de Janeiro,Brasília,Curitiba,3,0
-Quanto é 2+2?,3,4,5,6,2,0
+pergunta;opcao1;opcao2;opcao3;opcao4;correta;disciplina;dificuldade
+Quanto é 3 + 1?;2;3;4;5;3;matematica;0
+Qual número vem depois do 7?;6;8;9;5;2;matematica;0
+Quanto é 40 dividido por 5?;6;7;8;9;3;matematica;1
+Quanto é 5 x 3?;15;10;20;8;1;matematica;1
+Se x = 2, quanto vale 3x + 4?;10;8;6;7;1;matematica;2
+Qual é o valor de (3^2 + 4^2) ÷ 5?;5;6;7;25;1;matematica;2
+Qual dessas palavras é um verbo?;mesa;correr;azul;bola;2;portugues;0
+Qual palavra está escrita corretamente?;caza;cassa;casa;kasa;3;portugues;0
+O que é um adjetivo?;Palavra que nomeia;Palavra que descreve;Verbo;Pronome;2;portugues;1
+Qual é o sujeito da frase: 'Maria comeu o bolo'?;bolo;Maria;comeu;o;2;portugues;1
+Qual a figura de linguagem em: 'O tempo voa'?;Metáfora;Hipérbole;Ironia;Eufemismo;1;portugues;2
+Qual é o antônimo de 'feliz'?;alegre;triste;sorridente;divertido;2;portugues;2
+Qual desses é um mamífero?;cobra;peixe;cachorro;galinha;3;ciencias;0
+Qual é a função do coração?;Respirar;Bater;Bombear sangue;Digere alimentos;3;ciencias;0
+Qual parte da planta absorve água do solo?;Folha;Raiz;Caule;Fruto;2;ciencias;1
+O que os vegetais precisam para fazer fotossíntese?;Luz solar;Som;Vento;Açúcar;1;ciencias;1
+Qual órgão é responsável pela digestão dos alimentos?;Coração;Pulmão;Estômago;Fígado;3;ciencias;2
+O que é o sistema respiratório responsável por fazer?;Bater o coração;Respirar;Mover os ossos;Circular o sangue;2;ciencias;2
+O que cobre a maior parte da Terra?;Terra;Água;Areia;Gelo;2;geografia;0
+Qual é a capital do Brasil?;São Paulo;Rio de Janeiro;Brasília;Curitiba;3;geografia;0
+Qual é o maior rio do Brasil?;Rio São Francisco;Rio Amazonas;Rio Tietê;Rio Paraná;2;geografia;1
+Qual é o continente do Brasil?;Ásia;Europa;América do Sul;África;3;geografia;1
+Qual a principal vegetação da Amazônia?;Caatinga;Pampas;Floresta Tropical;Cerrado;3;geografia;2
+O que são placas tectônicas?;Tipos de rochas;Camadas da água;Partes da crosta terrestre;Animais marinhos;3;geografia;2
+Quem foi o primeiro presidente do Brasil?;Getúlio Vargas;Deodoro da Fonseca;Dom Pedro I;Lula;2;historia;0
+O Brasil foi colonizado por qual país?;Espanha;França;Portugal;Inglaterra;3;historia;0
+Em que ano foi proclamada a República no Brasil?;1888;1889;1890;1879;2;historia;1
+Quem foi Tiradentes?;Cantor;Revolucionário;Presidente;Imperador;2;historia;1
+O que foi a Revolta da Chibata?;Revolta de estudantes;Revolta de marinheiros contra castigos;Revolta de escravos;Protesto contra impostos;2;historia;2
+O que aconteceu em 1822 no Brasil?;Abolição da escravidão;Descobrimento;Independência do Brasil;Proclamação da República;3;historia;2
+Qual número vem depois do 7?;6;8;9;5;2;matematica;0
+Quanto é 3 + 1?;2;3;4;5;3;matematica;0
+Quanto é 40 dividido por 5?;6;7;8;9;3;matematica;1
+Quanto é 5 x 3?;15;10;20;8;1;matematica;1
+Se x = 2, quanto vale 3x + 4?;10;8;6;7;1;matematica;2
+Qual é o valor de (3^2 + 4^2) ÷ 5?;5;6;7;25;1;matematica;2
+Qual dessas palavras é um verbo?;mesa;correr;azul;bola;2;portugues;0
+Qual palavra está escrita corretamente?;caza;cassa;casa;kasa;3;portugues;0
+Qual é o sujeito da frase: 'Maria comeu o bolo'?;bolo;Maria;comeu;o;2;portugues;1
+O que é um adjetivo?;Palavra que nomeia;Palavra que descreve;Verbo;Pronome;2;portugues;1
+Qual a figura de linguagem em: 'O tempo voa'?;Metáfora;Hipérbole;Ironia;Eufemismo;1;portugues;2
+Qual é o antônimo de 'feliz'?;alegre;triste;sorridente;divertido;2;portugues;2
+Qual desses é um mamífero?;cobra;peixe;cachorro;galinha;3;ciencias;0
+Qual é a função do coração?;Respirar;Bater;Bombear sangue;Digere alimentos;3;ciencias;0
+O que os vegetais precisam para fazer fotossíntese?;Luz solar;Som;Vento;Açúcar;1;ciencias;1
+Qual parte da planta absorve água do solo?;Folha;Raiz;Caule;Fruto;2;ciencias;1
+O que é o sistema respiratório responsável por fazer?;Bater o coração;Respirar;Mover os ossos;Circular o sangue;2;ciencias;2
+Qual órgão é responsável pela digestão dos alimentos?;Coração;Pulmão;Estômago;Fígado;3;ciencias;2
+Qual é a capital do Brasil?;São Paulo;Rio de Janeiro;Brasília;Curitiba;3;geografia;0
+O que cobre a maior parte da Terra?;Terra;Água;Areia;Gelo;2;geografia;0
+Qual é o maior rio do Brasil?;Rio São Francisco;Rio Amazonas;Rio Tietê;Rio Paraná;2;geografia;1
+Qual é o continente do Brasil?;Ásia;Europa;América do Sul;África;3;geografia;1
+O que são placas tectônicas?;Tipos de rochas;Camadas da água;Partes da crosta terrestre;Animais marinhos;3;geografia;2
+Qual a principal vegetação da Amazônia?;Caatinga;Pampas;Floresta Tropical;Cerrado;3;geografia;2
+Quem foi o primeiro presidente do Brasil?;Getúlio Vargas;Deodoro da Fonseca;Dom Pedro I;Lula;2;historia;0
+O Brasil foi colonizado por qual país?;Espanha;França;Portugal;Inglaterra;3;historia;0
+Quem foi Tiradentes?;Cantor;Revolucionário;Presidente;Imperador;2;historia;1
+Em que ano foi proclamada a República no Brasil?;1888;1889;1890;1879;2;historia;1
+O que aconteceu em 1822 no Brasil?;Abolição da escravidão;Descobrimento;Independência do Brasil;Proclamação da República;3;historia;2
+O que foi a Revolta da Chibata?;Revolta de estudantes;Revolta de marinheiros contra castigos;Revolta de escravos;Protesto contra impostos;2;historia;2
+Qual número vem depois do 7?;6;8;9;5;2;matematica;0
+Quanto é 3 + 1?;2;3;4;5;3;matematica;0
+Quanto é 40 dividido por 5?;6;7;8;9;3;matematica;1
+Quanto é 5 x 3?;15;10;20;8;1;matematica;1
+Qual é o valor de (3^2 + 4^2) ÷ 5?;5;6;7;25;1;matematica;2
+Se x = 2, quanto vale 3x + 4?;10;8;6;7;1;matematica;2
+Qual palavra está escrita corretamente?;caza;cassa;casa;kasa;3;portugues;0
+Qual dessas palavras é um verbo?;mesa;correr;azul;bola;2;portugues;0
+O que é um adjetivo?;Palavra que nomeia;Palavra que descreve;Verbo;Pronome;2;portugues;1
+Qual é o sujeito da frase: 'Maria comeu o bolo'?;bolo;Maria;comeu;o;2;portugues;1
+Qual a figura de linguagem em: 'O tempo voa'?;Metáfora;Hipérbole;Ironia;Eufemismo;1;portugues;2
+Qual é o antônimo de 'feliz'?;alegre;triste;sorridente;divertido;2;portugues;2
+Qual desses é um mamífero?;cobra;peixe;cachorro;galinha;3;ciencias;0
+Qual é a função do coração?;Respirar;Bater;Bombear sangue;Digere alimentos;3;ciencias;0
+Qual parte da planta absorve água do solo?;Folha;Raiz;Caule;Fruto;2;ciencias;1
+O que os vegetais precisam para fazer fotossíntese?;Luz solar;Som;Vento;Açúcar;1;ciencias;1
+O que é o sistema respiratório responsável por fazer?;Bater o coração;Respirar;Mover os ossos;Circular o sangue;2;ciencias;2
+Qual órgão é responsável pela digestão dos alimentos?;Coração;Pulmão;Estômago;Fígado;3;ciencias;2
+O que cobre a maior parte da Terra?;Terra;Água;Areia;Gelo;2;geografia;0
+Qual é a capital do Brasil?;São Paulo;Rio de Janeiro;Brasília;Curitiba;3;geografia;0
+Qual é o continente do Brasil?;Ásia;Europa;América do Sul;África;3;geografia;1
+Qual é o maior rio do Brasil?;Rio São Francisco;Rio Amazonas;Rio Tietê;Rio Paraná;2;geografia;1
+Qual a principal vegetação da Amazônia?;Caatinga;Pampas;Floresta Tropical;Cerrado;3;geografia;2
+O que são placas tectônicas?;Tipos de rochas;Camadas da água;Partes da crosta terrestre;Animais marinhos;3;geografia;2
+O Brasil foi colonizado por qual país?;Espanha;França;Portugal;Inglaterra;3;historia;0
+Quem foi o primeiro presidente do Brasil?;Getúlio Vargas;Deodoro da Fonseca;Dom Pedro I;Lula;2;historia;0
+Quem foi Tiradentes?;Cantor;Revolucionário;Presidente;Imperador;2;historia;1
+Em que ano foi proclamada a República no Brasil?;1888;1889;1890;1879;2;historia;1
+O que foi a Revolta da Chibata?;Revolta de estudantes;Revolta de marinheiros contra castigos;Revolta de escravos;Protesto contra impostos;2;historia;2
+O que aconteceu em 1822 no Brasil?;Abolição da escravidão;Descobrimento;Independência do Brasil;Proclamação da República;3;historia;2
+Quanto é 3 + 1?;2;3;4;5;3;matematica;0
+Qual número vem depois do 7?;6;8;9;5;2;matematica;0
+Quanto é 40 dividido por 5?;6;7;8;9;3;matematica;1
+Quanto é 5 x 3?;15;10;20;8;1;matematica;1
+Se x = 2, quanto vale 3x + 4?;10;8;6;7;1;matematica;2
+Qual é o valor de (3^2 + 4^2) ÷ 5?;5;6;7;25;1;matematica;2
+Qual palavra está escrita corretamente?;caza;cassa;casa;kasa;3;portugues;0
+Qual dessas palavras é um verbo?;mesa;correr;azul;bola;2;portugues;0
+Qual é o sujeito da frase: 'Maria comeu o bolo'?;bolo;Maria;comeu;o;2;portugues;1
+O que é um adjetivo?;Palavra que nomeia;Palavra que descreve;Verbo;Pronome;2;portugues;1

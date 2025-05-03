@@ -6,6 +6,14 @@ const contador = document.getElementById('contador-dedos');
 const btnIniciar = document.getElementById('btn-iniciar');
 const btnConfig = document.getElementById('btn-config');
 
+let jogoIniciado = false;
+let perguntasSelecionadas = [];
+let perguntaAtual = 0;
+
+const quizContainer = document.getElementById("quiz-container");
+const perguntaEl = document.getElementById("pergunta");
+const opcoesEl = document.getElementById("opcoes");
+
 /* Helper: checa se ponto (x, y) está sobre botão */
 function pontoSobreBotao(x, y, botao) {
   const rect = botao.getBoundingClientRect();
@@ -24,10 +32,11 @@ function contarDedos(keypoints, isLeftHand) {
   for (const [topo, base] of dedos) {
     if (keypoints[topo].y < keypoints[base].y) levantados++;
   }
-  // Polegar: INVERTE a comparação do x
+  // Polegar: lógica para palma da mão
   const polegarAberto = isLeftHand
-    ? keypoints[4].x < keypoints[3].x // mão esquerda do USUÁRIO: polegar à esquerda
-    : keypoints[4].x > keypoints[3].x; // mão direita do USUÁRIO: polegar à direita
+    ? keypoints[4].x > keypoints[3].x // mão esquerda do USUÁRIO: polegar vai para direita
+    : keypoints[4].x < keypoints[3].x; // mão direita do USUÁRIO: polegar vai para esquerda
+
   if (polegarAberto) levantados++;
   return levantados;
 }
@@ -47,35 +56,76 @@ async function setupCamera() {
 
 //carregar perguntas do CSV
 async function carregarCSV() {
-    const resposta = await fetch('perguntas.csv');
-    const texto = await resposta.text();
-    const linhas = texto.trim().split('\n');
-  
-    const cabecalho = linhas[0].split(','); // ["pergunta", "opcao1", ..., "correta", "dificuldade"]
-  
-    const perguntas = linhas.slice(1).map(linha => {
-      const valores = linha.split(',');
-      return {
-        pergunta: valores[0],
-        opcoes: valores.slice(1, 5),
-        correta: parseInt(valores[5]) - 1, // transforma de 1–4 para 0–3
-        dificuldade: parseInt(valores[6])  // 0 = fácil, 1 = médio, 2 = difícil
-      };
-    });
-  
-    console.log("Perguntas carregadas:", perguntas);
-    return perguntas;
+  const resposta = await fetch('perguntas.csv');
+  const texto = await resposta.text();
+  const linhas = texto.trim().split('\n');
+
+  const cabecalho = linhas[0].split(','); // ["pergunta", "opcao1", ..., "correta", "dificuldade"]
+
+  const perguntas = linhas.slice(1).map(linha => {
+    const valores = linha.split(',');
+    return {
+      pergunta: valores[0],
+      opcoes: valores.slice(1, 5),
+      correta: parseInt(valores[5]) - 1, // transforma de 1–4 para 0–3
+      dificuldade: parseInt(valores[6])  // 0 = fácil, 1 = médio, 2 = difícil
+    };
+  });
+
+  console.log("Perguntas carregadas:", perguntas);
+  return perguntas;
+}
+
+async function iniciarJogo() {
+  console.log("O JOGO INICIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+  const todasPerguntas = await carregarCSV();
+
+  let escolha = prompt(
+    "Escolha a dificuldade:\n0 - Fácil\n1 - Médio\n2 - Difícil\n3 - Aleatório"
+  );
+
+  const nivel = parseInt(escolha);
+  if ([0, 1, 2].includes(nivel)) {
+    perguntasSelecionadas = todasPerguntas.filter(p => p.dificuldade === nivel);
+  } else {
+    perguntasSelecionadas = todasPerguntas;
   }
 
-/* Lógica principal */
-async function main() {    
+  if (perguntasSelecionadas.length === 0) {
+    alert("Nenhuma pergunta encontrada para esse nível!");
+    jogoIniciado = false;
+    return;
+  }
 
-     // Exemplo de uso:
+  quizContainer.style.display = "block";
+  mostrarPergunta();
+
+}
+
+function mostrarPergunta() {
+  const pergunta = perguntasSelecionadas[perguntaAtual];
+
+  perguntaEl.textContent = pergunta.pergunta;
+  opcoesEl.innerHTML = "";
+
+  pergunta.opcoes.forEach((opcao, i) => {
+    const li = document.createElement("li");
+    li.textContent = `${i + 1}) ${opcao}`;
+    li.style.fontSize = "18px";
+    opcoesEl.appendChild(li);
+  });
+}
+
+
+/* Lógica principal */
+async function main() {
+
+  // Exemplo de uso:
   carregarCSV().then(perguntas => {
     // Aqui você pode filtrar por dificuldade se quiser
     const faceis = perguntas.filter(p => p.dificuldade === 0);
     console.log("Perguntas fáceis:", faceis);
-  
+
     // ou usar todas:
     perguntas.forEach(p => {
       console.log(`[${p.dificuldade}] ${p.pergunta}`);
@@ -113,7 +163,7 @@ async function main() {
           ctx.fill();
         }
         // Correção da mão
-       
+
         const isLeftHand = hand.handedness && hand.handedness.toLowerCase() === "left";
         const dedos = contarDedos(hand.keypoints, isLeftHand);
         totalDedos += dedos;
@@ -123,14 +173,21 @@ async function main() {
         if (indicador) {
           // Ajusta para tela real
           const escalaLargura = window.innerWidth / canvas.width;
-          const escalaAltura  = window.innerHeight / canvas.height;
+          const escalaAltura = window.innerHeight / canvas.height;
           const x = (canvas.width - indicador.x) * escalaLargura;
           const y = indicador.y * escalaAltura;
 
           if (pontoSobreBotao(x, y, btnIniciar)) {
             btnIniciar.classList.add('hover');
-            // Aqui você pode acionar função do botão se quiser
+
+            if (!jogoIniciado) {
+              jogoIniciado = true;
+              setTimeout(() => {
+                iniciarJogo();
+              }, 500); // pequeno delay pra evitar múltiplos disparos
+            }
           }
+
           if (pontoSobreBotao(x, y, btnConfig)) {
             btnConfig.classList.add('hover');
             // Aqui também
@@ -144,5 +201,6 @@ async function main() {
     requestAnimationFrame(detectar);
   }
   detectar();
+
 }
 main();
