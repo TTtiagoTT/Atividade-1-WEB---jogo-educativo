@@ -1,137 +1,201 @@
 // script.js
+
+const tituloProjeto = document.getElementById('titulo-projeto');
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const contador = document.getElementById('contador-dedos');
 const btnIniciar = document.getElementById('btn-iniciar');
-const btnConfig = document.getElementById('btn-config');
+const controlPanel = document.querySelector('.control-panel');
+
+const quizContainer = document.getElementById('quiz-container');
+const perguntaBlock = document.getElementById('pergunta-block');
+const disciplinaBlock = document.getElementById('disciplina-block');
+const dificuldadeBlock = document.getElementById('dificuldade-block');
+const opcoesEl = document.getElementById('opcoes');
+const scoreEl = document.getElementById('score-block');
+
+const diffContainer = document.getElementById('difficulty-container');
+const diffItems = Array.from(document.querySelectorAll('#dificuldades li'));
+
+const btnExit = document.getElementById('btn-exit');
+const resultsScreen = document.getElementById('results-screen');
+const finalScore = document.getElementById('final-score');
+const btnRestart = document.getElementById('btn-restart');
+const maoStatus = document.getElementById('mao-status');
+const fingerCursor = document.getElementById('finger-cursor');
+
+const feedbackContainer = document.getElementById('feedback-container');
+const feedbackMessage = document.getElementById('feedback-message');
+const btnNext = document.getElementById('btn-next');
 
 let jogoIniciado = false;
 let perguntasSelecionadas = [];
 let perguntaAtual = 0;
+let score = 0;
 
-const quizContainer = document.getElementById("quiz-container");
-const perguntaEl = document.getElementById("pergunta");
-const opcoesEl = document.getElementById("opcoes");
+// timers de hover-gesto
+let currentDiffHover = null;
+let selecionarDificTimer = null;
+let currentOpcHover = null;
+let selecionarOpcTimer = null;
+let exitTimer = null;
+let restartTimer = null;
+let nextTimer = null;
 
-/* Helper: checa se ponto (x, y) está sobre botão */
-function pontoSobreBotao(x, y, botao) {
-  const rect = botao.getBoundingClientRect();
-  return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+let timeDelay = 1000;
+
+// esconde Sair até o quiz começar
+btnExit.style.display = 'none';
+
+// Helpers
+function pontoSobre(x, y, el) {
+  const r = el.getBoundingClientRect();
+  return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+}
+function pontoSobreAlcance(x, y, el, m = 40) {
+  const r = el.getBoundingClientRect();
+  return x >= (r.left - m) &&
+         x <= (r.right + m) &&
+         y >= (r.top - m) &&
+         y <= (r.bottom + m);
 }
 
-/* Conta dedos com lógica corrigida */
-function contarDedos(keypoints, isLeftHand) {
-  let levantados = 0;
-  const dedos = [
-    [8, 6],   // indicador
-    [12, 10], // médio
-    [16, 14], // anelar
-    [20, 18]  // mindinho
-  ];
-  for (const [topo, base] of dedos) {
-    if (keypoints[topo].y < keypoints[base].y) levantados++;
-  }
-  // Polegar: lógica para palma da mão
-  const polegarAberto = isLeftHand
-    ? keypoints[4].x > keypoints[3].x // mão esquerda do USUÁRIO: polegar vai para direita
-    : keypoints[4].x < keypoints[3].x; // mão direita do USUÁRIO: polegar vai para esquerda
-
-  if (polegarAberto) levantados++;
-  return levantados;
-}
-
-/* Inicia a Câmera */
+// câmera
 async function setupCamera() {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    video.srcObject = stream;
-    return new Promise(resolve => {
-      video.onloadedmetadata = () => resolve(video);
-    });
-  } catch (error) {
-    alert('Erro ao acessar a câmera: ' + error.message);
-  }
+  const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+  video.srcObject = stream;
+  return new Promise(r => video.onloadedmetadata = () => r(video));
 }
 
-//carregar perguntas do CSV
+// carrega perguntas de CSV
 async function carregarCSV() {
-  const resposta = await fetch('perguntas.csv');
-  const texto = await resposta.text();
-  const linhas = texto.trim().split('\n');
-
-  const cabecalho = linhas[0].split(','); // ["pergunta", "opcao1", ..., "correta", "dificuldade"]
-
-  const perguntas = linhas.slice(1).map(linha => {
-    const valores = linha.split(',');
+  const res = await fetch('perguntas.csv');
+  const txt = await res.text();
+  const linhas = txt.trim().split('\n');
+  return linhas.slice(1).map(linha => {
+    const v = linha.split(';');
     return {
-      pergunta: valores[0],
-      opcoes: valores.slice(1, 5),
-      correta: parseInt(valores[5]) - 1, // transforma de 1–4 para 0–3
-      dificuldade: parseInt(valores[6])  // 0 = fácil, 1 = médio, 2 = difícil
+      pergunta: v[0],
+      opcoes: v.slice(1,5),
+      correta: parseInt(v[5],10) - 1,
+      disciplina: v[6] || 'Geral',
+      dificuldade: parseInt(v[7],10)
     };
   });
-
-  console.log("Perguntas carregadas:", perguntas);
-  return perguntas;
 }
 
+// inicia o quiz
 async function iniciarJogo() {
-  console.log("O JOGO INICIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-  const todasPerguntas = await carregarCSV();
-
-  let escolha = prompt(
-    "Escolha a dificuldade:\n0 - Fácil\n1 - Médio\n2 - Difícil\n3 - Aleatório"
-  );
-
-  const nivel = parseInt(escolha);
-  if ([0, 1, 2].includes(nivel)) {
-    perguntasSelecionadas = todasPerguntas.filter(p => p.dificuldade === nivel);
-  } else {
-    perguntasSelecionadas = todasPerguntas;
-  }
-
-  if (perguntasSelecionadas.length === 0) {
-    alert("Nenhuma pergunta encontrada para esse nível!");
-    jogoIniciado = false;
-    return;
-  }
-
-  quizContainer.style.display = "block";
-  mostrarPergunta();
-
+  jogoIniciado = true;
+  exitTimer = restartTimer = nextTimer = null;
+  tituloProjeto.classList.add('quiz-active');
+  controlPanel.style.display = 'none';
+  diffContainer.style.display = 'block';
+  quizContainer.style.display = 'none';
+  btnExit.style.display = 'none';
+  score = 0;
+  scoreEl.textContent = `Pontuação: ${score}`;
 }
 
+// escolhe dificuldade
+function escolherDificuldade(nivel) {
+  clearTimeout(selecionarDificTimer);
+  carregarCSV().then(todas => {
+    perguntasSelecionadas = [0,1,2].includes(nivel)
+      ? todas.filter(p => p.dificuldade === nivel)
+      : todas;
+    if (perguntasSelecionadas.length === 0) {
+      alert("Nenhuma pergunta neste nível!");
+      jogoIniciado = false;
+      diffContainer.style.display = 'none';
+      controlPanel.style.display = 'flex';
+      tituloProjeto.classList.remove('quiz-active');
+      return;
+    }
+    diffContainer.style.display = 'none';
+    quizContainer.style.display = 'block';
+    btnExit.style.display = 'block';
+    perguntaAtual = 0;
+    mostrarPergunta();
+  });
+}
+
+// exibe pergunta e opções
 function mostrarPergunta() {
-  const pergunta = perguntasSelecionadas[perguntaAtual];
-
-  perguntaEl.textContent = pergunta.pergunta;
-  opcoesEl.innerHTML = "";
-
-  pergunta.opcoes.forEach((opcao, i) => {
-    const li = document.createElement("li");
-    li.textContent = `${i + 1}) ${opcao}`;
-    li.style.fontSize = "18px";
+  const p = perguntasSelecionadas[perguntaAtual];
+  perguntaBlock.textContent = p.pergunta;
+  disciplinaBlock.textContent = p.disciplina;
+  const labels = ['Fácil','Médio','Difícil','Aleatório'];
+  dificuldadeBlock.textContent= `Nível: ${labels[p.dificuldade]}`;
+  opcoesEl.innerHTML = '';
+  p.opcoes.forEach((opc, i) => {
+    const li = document.createElement('li');
+    li.textContent = opc;
+    li.dataset.index = i;
     opcoesEl.appendChild(li);
   });
 }
 
+// seleciona uma opção e exibe feedback
+function selecionarOpcao(idx) {
+  clearTimeout(selecionarOpcTimer);
+  const p = perguntasSelecionadas[perguntaAtual];
+  const isCorrect = idx === p.correta;
+  if (isCorrect) score++;
+  scoreEl.textContent = `Pontuação: ${score}`;
+  feedbackMessage.textContent = isCorrect
+    ? "✅ Correto!"
+    : `❌ Errado! Resposta: ${p.opcoes[p.correta]}`;
+  feedbackContainer.classList.remove('hidden');
+}
 
-/* Lógica principal */
+// Próximo
+btnNext.addEventListener('click', () => {
+  feedbackContainer.classList.add('hidden');
+  perguntaAtual++;
+  if (perguntaAtual < perguntasSelecionadas.length) {
+    mostrarPergunta();
+  } else {
+    mostrarResultados();
+  }
+});
+
+// mostra tela de resultados
+function mostrarResultados() {
+  finalScore.textContent = `Pontuação: ${score}`;
+  resultsScreen.classList.remove('hidden');
+  quizContainer.style.display = 'none';
+  diffContainer.style.display = 'none';
+  btnExit.style.display = 'none';
+  tituloProjeto.classList.remove('quiz-active');
+}
+
+// sai do jogo
+function exitGame() {
+  if (!jogoIniciado) return;
+  if (exitTimer) clearTimeout(exitTimer);
+  exitTimer = null;
+  feedbackContainer.classList.add('hidden');
+  mostrarResultados();
+  jogoIniciado = false;
+}
+
+// reinicia o jogo
+function restartGame() {
+  if (restartTimer) clearTimeout(restartTimer);
+  restartTimer = null;
+  resultsScreen.classList.add('hidden');
+  controlPanel.style.display = 'flex';
+  quizContainer.style.display = 'none';
+  tituloProjeto.classList.remove('quiz-active');
+}
+
+btnExit.addEventListener('click', exitGame);
+btnRestart.addEventListener('click', restartGame);
+
+// loop principal de detecção
 async function main() {
-
-  // Exemplo de uso:
-  carregarCSV().then(perguntas => {
-    // Aqui você pode filtrar por dificuldade se quiser
-    const faceis = perguntas.filter(p => p.dificuldade === 0);
-    console.log("Perguntas fáceis:", faceis);
-
-    // ou usar todas:
-    perguntas.forEach(p => {
-      console.log(`[${p.dificuldade}] ${p.pergunta}`);
-    });
-  });
-
   await setupCamera();
   video.play();
   await tf.setBackend('webgl');
@@ -139,68 +203,140 @@ async function main() {
   canvas.height = video.videoHeight;
 
   const model = handPoseDetection.SupportedModels.MediaPipeHands;
-  const detectorConfig = {
-    runtime: 'mediapipe',
-    modelType: 'full',
-    solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/hands',
-  };
-  const detector = await handPoseDetection.createDetector(model, detectorConfig);
+  const detector = await handPoseDetection.createDetector(model, {
+    runtime:'mediapipe',
+    modelType:'full',
+    solutionPath:'https://cdn.jsdelivr.net/npm/@mediapipe/hands'
+  });
 
   async function detectar() {
     const hands = await detector.estimateHands(video);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    btnIniciar.classList.remove('hover');
 
-    // Remove destaque dos botões por padrão
-    [btnIniciar, btnConfig].forEach(btn => btn.classList.remove('hover'));
+    maoStatus.textContent = hands.length > 0 ? "Mão: OK" : "Mão: NÃO";
 
     if (hands.length > 0) {
-      let totalDedos = 0;
-      for (const hand of hands) {
-        for (const keypoint of hand.keypoints) {
-          ctx.beginPath();
-          ctx.arc(keypoint.x, keypoint.y, 6, 0, 2 * Math.PI);
-          ctx.fillStyle = 'red';
-          ctx.fill();
+      const hand = hands[0];
+      hand.keypoints.forEach(k => {
+        ctx.beginPath();
+        ctx.arc(k.x, k.y, 6, 0, 2*Math.PI);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+      });
+      const ind = hand.keypoints[8];
+      ctx.beginPath();
+      ctx.arc(ind.x, ind.y, 20, 0, 2*Math.PI);
+      ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      const ex = window.innerWidth / canvas.width;
+      const ey = window.innerHeight / canvas.height;
+      const x = (canvas.width - ind.x) * ex;
+      const y = ind.y * ey;
+
+      // 0) se feedback aberto (agora também permite “Sair”)
+      if (!feedbackContainer.classList.contains('hidden')) {
+        const OVER_MARGIN = 40;
+        const overNext = pontoSobreAlcance(x, y, btnNext, OVER_MARGIN);
+        const overExit = pontoSobreAlcance(x, y, btnExit, OVER_MARGIN);
+
+        if (overNext) {
+          btnNext.classList.add('hover');
+          btnExit.classList.remove('hover');
+          clearTimeout(exitTimer);
+          if (!nextTimer) nextTimer = setTimeout(() => {
+            btnNext.click();
+            nextTimer = null;
+          }, timeDelay);
         }
-        // Correção da mão
-
-        const isLeftHand = hand.handedness && hand.handedness.toLowerCase() === "left";
-        const dedos = contarDedos(hand.keypoints, isLeftHand);
-        totalDedos += dedos;
-
-        // Detecção do gesto/indicado sobre botão
-        const indicador = hand.keypoints[8];
-        if (indicador) {
-          // Ajusta para tela real
-          const escalaLargura = window.innerWidth / canvas.width;
-          const escalaAltura = window.innerHeight / canvas.height;
-          const x = (canvas.width - indicador.x) * escalaLargura;
-          const y = indicador.y * escalaAltura;
-
-          if (pontoSobreBotao(x, y, btnIniciar)) {
-            btnIniciar.classList.add('hover');
-
-            if (!jogoIniciado) {
-              jogoIniciado = true;
-              setTimeout(() => {
-                iniciarJogo();
-              }, 500); // pequeno delay pra evitar múltiplos disparos
-            }
-          }
-
-          if (pontoSobreBotao(x, y, btnConfig)) {
-            btnConfig.classList.add('hover');
-            // Aqui também
-          }
+        else if (overExit) {
+          btnExit.classList.add('hover');
+          btnNext.classList.remove('hover');
+          clearTimeout(nextTimer);
+          if (!exitTimer) exitTimer = setTimeout(() => {
+            exitGame();
+            exitTimer = null;
+          }, timeDelay);
+        }
+        else {
+          btnNext.classList.remove('hover');
+          btnExit.classList.remove('hover');
+          clearTimeout(nextTimer);
+          clearTimeout(exitTimer);
+          nextTimer = exitTimer = null;
         }
       }
-      contador.textContent = `Dedos levantados: ${totalDedos}`;
-    } else {
-      contador.textContent = `Nenhuma mão detectada`;
+      // 1) escolhe dificuldade
+      else if (diffContainer.style.display === 'block') {
+        const hovered = diffItems.find(li => pontoSobre(x, y, li));
+        diffItems.forEach(li => li.classList.toggle('hover', li === hovered));
+        if (hovered && currentDiffHover !== hovered) {
+          clearTimeout(selecionarDificTimer);
+          currentDiffHover = hovered;
+          selecionarDificTimer = setTimeout(()=>{
+            escolherDificuldade(+hovered.dataset.nivel);
+            currentDiffHover = null;
+          }, timeDelay);
+        }
+        if (!hovered && currentDiffHover) {
+          clearTimeout(selecionarDificTimer);
+          currentDiffHover = null;
+        }
+      }
+      // 2) quiz ativo
+      else if (quizContainer.style.display === 'block') {
+        const opcLis = Array.from(opcoesEl.querySelectorAll('li'));
+        const hoveredOp = opcLis.find(li => pontoSobre(x,y,li));
+        opcLis.forEach(li => li.classList.toggle('hover', li===hoveredOp));
+        if (hoveredOp && currentOpcHover !== hoveredOp) {
+          clearTimeout(selecionarOpcTimer);
+          currentOpcHover = hoveredOp;
+          selecionarOpcTimer = setTimeout(()=>{
+            selecionarOpcao(+hoveredOp.dataset.index);
+            currentOpcHover = null;
+          }, timeDelay);
+        }
+        if (!hoveredOp && currentOpcHover) {
+          clearTimeout(selecionarOpcTimer);
+          currentOpcHover = null;
+        }
+        // hover exit (na tela de quiz)
+        const MARGIN_EXIT = 40;
+        if (pontoSobreAlcance(x, y, btnExit, MARGIN_EXIT)) {
+          btnExit.classList.add('hover');
+          if (!exitTimer) exitTimer = setTimeout(exitGame, timeDelay);
+        } else {
+          btnExit.classList.remove('hover');
+          clearTimeout(exitTimer);
+          exitTimer = null;
+        }
+      }
+      // 3) tela resultados
+      else if (!resultsScreen.classList.contains('hidden')) {
+        if (pontoSobre(x,y,btnRestart)) {
+          btnRestart.classList.add('hover');
+          if (!restartTimer) restartTimer = setTimeout(restartGame, timeDelay);
+        } else {
+          btnRestart.classList.remove('hover');
+          clearTimeout(restartTimer);
+          restartTimer = null;
+        }
+      }
+      // 4) tela inicial
+      else {
+        if (pontoSobre(x,y,btnIniciar)) {
+          btnIniciar.classList.add('hover');
+          if (!jogoIniciado) setTimeout(iniciarJogo, timeDelay);
+        }
+      }
     }
+
     requestAnimationFrame(detectar);
   }
-  detectar();
 
+  detectar();
 }
+
 main();
