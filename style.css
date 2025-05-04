@@ -1,5 +1,6 @@
 /* Body / Vídeo / Canvas */
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   width: 100vw;
@@ -8,10 +9,14 @@ body, html {
   background: #222;
   font-family: 'Segoe UI', Arial, sans-serif;
 }
-#video, #canvas {
+
+#video,
+#canvas {
   position: absolute;
-  left: 0; top: 0;
-  width: 100vw; height: 100vh;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
   object-fit: cover;
   z-index: 1;
   pointer-events: none;
@@ -26,7 +31,7 @@ body, html {
   transform: translateX(-50%);
   font-size: 4.5vw;
   font-weight: bold;
-  background: linear-gradient(90deg,#12c2e9,#c471ed,#f64f59);
+  background: linear-gradient(90deg, #12c2e9, #c471ed, #f64f59);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   color: #fff;
@@ -35,6 +40,7 @@ body, html {
   user-select: none;
   pointer-events: none;
 }
+
 /* quando o quiz estiver ativo, move p/ canto inferior esquerdo */
 #titulo-projeto.quiz-active {
   top: auto;
@@ -59,7 +65,7 @@ body, html {
   position: absolute;
   top: 65%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   pointer-events: auto;
   z-index: 2;
   display: flex;
@@ -69,7 +75,7 @@ body, html {
 
 /* Estilo genérico para todos os botões */
 button {
-  background: rgba(255,255,255,0.85);
+  background: rgba(255, 255, 255, 0.85);
   border: none;
   color: #0a2740;
   font-size: 2.4em;
@@ -80,10 +86,11 @@ button {
   transition: background .2s, color .2s, transform .15s;
   font-weight: 600;
 }
+
 /* Hover para TODOS os botões (inclui #btn-iniciar) */
 button.hover,
 #btn-iniciar.hover {
-  background: linear-gradient(90deg,#12c2e9,#c471ed,#f64f59);
+  background: linear-gradient(90deg, #12c2e9, #c471ed, #f64f59);
   color: #fff;
   transform: scale(1.05);
 }
@@ -91,7 +98,9 @@ button.hover,
 /* Header container: pergunta + side-info + stats */
 #header-container {
   position: absolute;
-  top: 2vw; left: 2vw; right: 2vw;
+  top: 2vw;
+  left: 2vw;
+  right: 2vw;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -103,7 +112,7 @@ button.hover,
 /* Pergunta em bloco branco */
 #pergunta-block {
   flex: 1;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.9);
   color: #0a2740;
   padding: 1.5em;
   border-radius: 8px;
@@ -118,9 +127,10 @@ button.hover,
   flex-direction: column;
   gap: 1vh;
 }
+
 #disciplina-block,
 #dificuldade-block {
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.7);
   color: #fff;
   padding: 0.8em 1.2em;
   border-radius: 8px;
@@ -135,9 +145,10 @@ button.hover,
   flex-direction: column;
   gap: 1vh;
 }
+
 #score-block,
 #contador-dedos {
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   color: #fff;
   padding: 1em 1.5em;
   border-radius: 8px;
@@ -153,13 +164,14 @@ button.hover,
   left: 2vw;
   right: 2vw;
   top: 25vh;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.7);
   padding: 2em;
   border-radius: 8px;
   box-shadow: 0 2px 12px #0007;
   pointer-events: auto;
   z-index: 5;
 }
+
 #opcoes {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -169,12 +181,13 @@ button.hover,
   padding: 0;
   list-style: none;
 }
+
 #opcoes li {
   aspect-ratio: 1/1;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.9);
   color: #0a2740;
   font-size: 2em;
   border-radius: 16px;
@@ -183,8 +196,9 @@ button.hover,
   transition: background .2s, color .2s, transform .15s;
   padding: 1em;
 }
+
 #opcoes li.hover {
-  background: linear-gradient(90deg,#12c2e9,#c471ed,#f64f59);
+  background: linear-gradient(90deg, #12c2e9, #c471ed, #f64f59);
   color: #fff;
   transform: scale(1.05);
 }
@@ -192,11 +206,13 @@ button.hover,
 /* Dificuldade (lista) */
 #difficulty-container {
   position: absolute;
-  left: 50%; top: 65%;
+  left: 50%;
+  top: 65%;
   transform: translate(-50%, -50%);
   z-index: 3;
   pointer-events: auto;
 }
+
 #dificuldades {
   display: flex;
   gap: 4vw;
@@ -205,8 +221,9 @@ button.hover,
   margin: 0;
   justify-content: center;
 }
+
 #dificuldades li {
-  background: rgba(255,255,255,0.85);
+  background: rgba(255, 255, 255, 0.85);
   color: #0a2740;
   font-size: 2em;
   padding: 3.5vh 5vw;
@@ -215,8 +232,9 @@ button.hover,
   cursor: pointer;
   transition: background .2s, color .2s, transform .15s;
 }
+
 #dificuldades li.hover {
-  background: linear-gradient(90deg,#12c2e9,#c471ed,#f64f59);
+  background: linear-gradient(90deg, #12c2e9, #c471ed, #f64f59);
   color: #fff;
   transform: scale(1.05);
 }
@@ -236,6 +254,7 @@ button.hover,
   cursor: pointer;
   z-index: 7;
 }
+
 #btn-exit.hover {
   background: #f64f59;
   transform: scale(1.05);
@@ -245,19 +264,24 @@ button.hover,
 .hidden {
   display: none !important;
 }
+
 #results-screen {
   position: absolute;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.85);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 9;
 }
+
 #results-screen:not(.hidden) {
   display: flex;
 }
+
 #results-content {
   background: #fff;
   padding: 2em;
@@ -265,13 +289,16 @@ button.hover,
   text-align: center;
   max-width: 80vw;
 }
+
 #results-content h2 {
   margin-bottom: 0.5em;
 }
+
 #results-content p {
   font-size: 1.5em;
   margin-bottom: 1.5em;
 }
+
 #btn-restart {
   background: #12c2e9;
   color: #fff;
@@ -281,6 +308,7 @@ button.hover,
   border-radius: 8px;
   cursor: pointer;
 }
+
 #btn-restart.hover {
   background: #0ab4d0;
 }
@@ -293,21 +321,24 @@ button.hover,
   display: flex;
   align-items: center;
   gap: 1em;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.9);
   padding: 0.5em 1em;
   border-radius: 8px;
   box-shadow: 0 2px 10px #0005;
   pointer-events: auto;
   z-index: 10;
 }
+
 #feedback-container.hidden {
   display: none;
 }
+
 #feedback-message {
   font-size: 1.5em;
   font-weight: 600;
   color: #0a2740;
 }
+
 #btn-next {
   background: #12c2e9;
   color: #fff;
@@ -319,6 +350,7 @@ button.hover,
   cursor: pointer;
   transition: background .2s, transform .15s;
 }
+
 #btn-next.hover,
 #btn-next:hover {
   background: #0ab4d0;
@@ -328,13 +360,126 @@ button.hover,
 /* Cursor personalizado */
 #finger-cursor {
   position: fixed;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 24px;
   height: 24px;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255, 255, 255, 0.8);
   border: 2px solid #fff;
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   will-change: transform;
+}
+
+/* Estilo para todas as boxes de status */
+.stats-box {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 1em 1.5em;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px #0005;
+  font-size: 1.4em;
+  font-weight: 600;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.tempo-normal {
+  color: #fff;
+}
+
+.tempo-aviso {
+  color: #ffcc00;
+}
+
+.tempo-perigo {
+  color: #ff3333;
+  animation: pulse 0.5s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.1);
+  }
+}
+
+#erros-block {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 1em 1.5em;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px #0005;
+  font-size: 1.4em;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  min-width: 100px;
+}
+
+#erros-texto::before {
+  content: "X ";
+  color: #ff3333;
+  font-weight: bold;
+}
+
+@keyframes piscar {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.3;
+    transform: scale(1.1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+#cronometro-container {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 1em 1.5em;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px #0005;
+  font-size: 1.4em;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  min-width: 100px;
+}
+
+#cronometro-emoji {
+  /* Emoji estático */
+  display: inline-block;
+}
+
+#cronometro {
+  transition: color 0.3s;
+  font-weight: bold;
+}
+
+.tempo-normal {
+  color: #fff;
+}
+
+.tempo-aviso {
+  color: #ffcc00;
+}
+
+.tempo-perigo {
+  color: #ff3333;
+  animation: pulse 0.5s infinite alternate;
 }

@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TapQuiz</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/hand-pose-detection"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands"></script>
 </head>
+
 <body>
   <h1 id="titulo-projeto">TapQuiz</h1>
-<!-- bloco de feedback (canto inferior direito) -->
+  <!-- bloco de feedback (canto inferior direito) -->
   <div id="feedback-container" class="hidden">
     <span id="feedback-message"></span>
     <button id="btn-next">Próxima</button>
   </div>
-<video id="video" autoplay playsinline></video>
+  <video id="video" autoplay playsinline></video>
   <canvas id="canvas"></canvas>
-<div class="control-panel">
+  <div class="control-panel">
     <button id="btn-iniciar">Iniciar</button>
   </div>
-<p id="contador-dedos">Dedos levantados: 0</p>
-<!-- Quiz Container -->
+  <p id="contador-dedos">Dedos levantados: 0</p>
+  <!-- Quiz Container -->
   <div id="quiz-container" style="display:none;">
     <div id="header-container">
       <div id="pergunta-block"></div>
@@ -34,14 +36,21 @@
       </div>
       <div id="stats-container">
         <div id="score-block"></div>
-        <div id="mao-status"></div>
+        <div id="cronometro-container">
+          <span id="cronometro-emoji">⏱️</span>
+          <span id="cronometro">15</span>
+        </div>
+        <div id="erros-block">
+          <span id="erros-texto">0/3</span>
+        </div>
+        <div id="mao-status" class="stats-box"></div>
       </div>
     </div>
     <div id="opcoes-block">
       <ul id="opcoes"></ul>
     </div>
   </div>
-<!-- Dificuldade -->
+  <!-- Dificuldade -->
   <div id="difficulty-container" style="display:none;">
     <h2 id="difficulty-title">Escolha a sua dificuldade</h2>
     <ul id="dificuldades">
@@ -51,12 +60,12 @@
       <li data-nivel="3">Aleatório</li>
     </ul>
   </div>
-<!-- canto inferior esquerdo: Sair + marca TapQuiz -->
+  <!-- canto inferior esquerdo: Sair + marca TapQuiz -->
   <div id="bottom-left-bar">
     <button id="btn-exit">Sair</button>
-    <span id="tapquiz-brand">TapQuiz</span>
+    <!-- <span id="tapquiz-brand">TapQuiz</span>-->
   </div>
-<!-- Tela de resultados -->
+  <!-- Tela de resultados -->
   <div id="results-screen" class="hidden">
     <div id="results-content">
       <h2>Resultados Finais</h2>
@@ -64,7 +73,8 @@
       <button id="btn-restart">Reiniciar</button>
     </div>
   </div>
-<script src="script.js"></script>
+  <script src="script.js"></script>
   <div id="finger-cursor"></div>
 </body>
+
 </html>
