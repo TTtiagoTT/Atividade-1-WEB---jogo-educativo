@@ -10,6 +10,7 @@ html {
   font-family: 'Segoe UI', Arial, sans-serif;
 }
 
+/* Vídeo e canvas ocupam toda a tela */
 #video,
 #canvas {
   position: absolute;
@@ -129,6 +130,7 @@ button.hover,
   gap: 1vh;
 }
 
+/* Blocos de disciplina e dificuldade */
 #disciplina-block,
 #dificuldade-block {
   background: rgba(0, 0, 0, 0.7);
@@ -147,6 +149,7 @@ button.hover,
   gap: 1vh;
 }
 
+/* Blocos de score e contador de dedos */
 #score-block,
 #contador-dedos {
   background: rgba(0, 0, 0, 0.6);
@@ -173,6 +176,7 @@ button.hover,
   z-index: 5;
 }
 
+/* Opções do quiz (lista) */
 #opcoes {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -183,6 +187,7 @@ button.hover,
   list-style: none;
 }
 
+/* Opções do quiz (itens da lista) */
 #opcoes li {
   aspect-ratio: 1/1;
   display: flex;
@@ -198,6 +203,7 @@ button.hover,
   padding: 1em;
 }
 
+/* Opções do quiz (hover) */
 #opcoes li.hover {
   background: linear-gradient(90deg, #12c2e9, #c471ed, #f64f59);
   color: #fff;
@@ -214,6 +220,7 @@ button.hover,
   pointer-events: auto;
 }
 
+/* Título da dificuldade */
 #dificuldades {
   display: flex;
   gap: 4vw;
@@ -223,6 +230,7 @@ button.hover,
   justify-content: center;
 }
 
+/* Itens da lista de dificuldades */
 #dificuldades li {
   background: rgba(255, 255, 255, 0.85);
   color: #0a2740;
@@ -234,6 +242,7 @@ button.hover,
   transition: background .2s, color .2s, transform .15s;
 }
 
+/* Hover para os itens da lista de dificuldades */
 #dificuldades li.hover {
   background: linear-gradient(90deg, #12c2e9, #c471ed, #f64f59);
   color: #fff;
@@ -256,6 +265,7 @@ button.hover,
   z-index: 7;
 }
 
+/* Hover para o botão Sair */
 #btn-exit.hover {
   background: #f64f59;
   transform: scale(1.05);
@@ -266,6 +276,7 @@ button.hover,
   display: none !important;
 }
 
+/* Tela de resultados */
 #results-screen {
   position: absolute;
   top: 0;
@@ -279,10 +290,12 @@ button.hover,
   z-index: 9;
 }
 
+/* Tela de resultados (apenas quando visível) */
 #results-screen:not(.hidden) {
   display: flex;
 }
 
+/* Conteúdo da tela de resultados */
 #results-content {
   background: #fff;
   padding: 2em;
@@ -291,15 +304,18 @@ button.hover,
   max-width: 80vw;
 }
 
+/* Título e parágrafo da tela de resultados */
 #results-content h2 {
   margin-bottom: 0.5em;
 }
 
+/* Título da tela de resultados */
 #results-content p {
   font-size: 1.5em;
   margin-bottom: 1.5em;
 }
 
+/* Botão Reiniciar */
 #btn-restart {
   background: #12c2e9;
   color: #fff;
@@ -310,6 +326,7 @@ button.hover,
   cursor: pointer;
 }
 
+/* Hover para o botão Reiniciar */
 #btn-restart.hover {
   background: #0ab4d0;
 }
@@ -330,16 +347,19 @@ button.hover,
   z-index: 10;
 }
 
+/* Feedback / botão Próxima (apenas quando visível) */
 #feedback-container.hidden {
   display: none;
 }
 
+/* Texto de feedback */
 #feedback-message {
   font-size: 1.5em;
   font-weight: 600;
   color: #0a2740;
 }
 
+/* Botão Próxima */
 #btn-next {
   background: #12c2e9;
   color: #fff;
@@ -352,6 +372,7 @@ button.hover,
   transition: background .2s, transform .15s;
 }
 
+/* Hover para o botão Próxima */
 #btn-next.hover,
 #btn-next:hover {
   background: #0ab4d0;
@@ -388,19 +409,23 @@ button.hover,
   gap: 0.5em;
 }
 
+/* Estilo para o bloco de erros */
 .tempo-normal {
   color: #fff;
 }
 
+/* Estilo para o bloco de erros */
 .tempo-aviso {
   color: #ffcc00;
 }
 
+/* Estilo para o bloco de erros */
 .tempo-perigo {
   color: #ff3333;
   animation: pulse 0.5s infinite alternate;
 }
 
+/* Estilo para o bloco de erros */
 @keyframes pulse {
   from {
     transform: scale(1);
@@ -411,6 +436,7 @@ button.hover,
   }
 }
 
+/* Estilo para o bloco de erros */
 #erros-block {
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
@@ -425,12 +451,14 @@ button.hover,
   min-width: 100px;
 }
 
+/* Estilo para o bloco de erros */
 #erros-texto::before {
   content: "X ";
   color: #ff3333;
   font-weight: bold;
 }
 
+/* Estilo para o bloco de erros */
 @keyframes piscar {
   0% {
     opacity: 1;
@@ -448,6 +476,7 @@ button.hover,
   }
 }
 
+/* Estilo para o bloco de erros */
 #cronometro-container {
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
@@ -520,6 +549,7 @@ button.hover,
   height: 100%;               /* preenche toda a altura disponível */
 }
 
+/* Ajusta os blocos dentro do stats-container */
 #stats-container #score-block {
   grid-area: score;
 }
@@ -554,6 +584,7 @@ button.hover,
 #stats-container {
   gap: 0.5vh;       /* reduz o espaçamento interno entre blocos */
 }
+
 #stats-container > div {
   padding: 1.2em;   /* antes era 1em */
   font-size: 1.2em; /* opcional: texto menor */
@@ -574,6 +605,7 @@ button.hover,
   text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
 }
 
+/* Ajusta o container de dificuldade */
 #difficulty-container {
   position: absolute;
   top: 30vh;               /* sobe o container para 30% da altura da viewport */
