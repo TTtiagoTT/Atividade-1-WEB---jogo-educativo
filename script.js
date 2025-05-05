@@ -77,12 +77,13 @@ async function setupCamera() {
   return new Promise(r => video.onloadedmetadata = () => r(video));
 }
 
-// carrega perguntas de CSV
+// carrega perguntas de CSV e embaralha para aleatoriedade das questoes 
 async function carregarCSV() {
   const res = await fetch('perguntas.csv');
   const txt = await res.text();
   const linhas = txt.trim().split('\n');
-  return linhas.slice(1).map(linha => {
+
+  const perguntas = linhas.slice(1).map(linha => {
     const v = linha.split(';');
     return {
       pergunta: v[0],
@@ -92,7 +93,17 @@ async function carregarCSV() {
       dificuldade: parseInt(v[7], 10)
     };
   });
+
+  // Embaralha as perguntas ainda na carga inicial
+  for (let i = perguntas.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [perguntas[i], perguntas[j]] = [perguntas[j], perguntas[i]];
+  }
+
+  return perguntas;
 }
+
+
 
 function iniciarCronometro() {
   tempoRestante = 15;
@@ -105,20 +116,19 @@ function iniciarCronometro() {
 
     if (tempoRestante <= 0) {
       clearInterval(intervaloTempo);
+
+      // Exibe feedback de tempo esgotado
       const p = perguntasSelecionadas[perguntaAtual];
       feedbackMessage.textContent = `⏰ Tempo esgotado! Resposta: ${p.opcoes[p.correta]}`;
       feedbackContainer.classList.remove('hidden');
-      contarErro(); // Considera erro se tempo acaba
 
-      if (errosRodada < 3) {
-        setTimeout(() => {  // Adicionei um delay para melhor experiência
-          feedbackContainer.classList.add('hidden');
-          mostrarPergunta(); // Próxima pergunta
-        }, 1500);
-      }
-    } // <-- Faltava esta chave
+      // Conta erro, mas NÃO chama mostrarPergunta()
+      contarErro();
+      // Aguardamos que o usuário mova o dedo até o botão “Próxima”
+      // e aí o hover/dataDelay disparará o nextTimer para btnNext.click()
+    }
   }, 1000);
-} // <-- Esta fecha a função iniciarCronometro
+}
 
 
 
@@ -180,7 +190,15 @@ function escolherDificuldade(nivel) {
       tituloProjeto.classList.remove('quiz-active');
       return;
     }
+    // esconde painel de dificuldade
     diffContainer.style.display = 'none';
+
+    // limpa hover e timers para não repetir a escolha
+    clearTimeout(selecionarDificTimer);
+    currentDiffHover = null;
+    diffItems.forEach(li => li.classList.remove('hover'));
+
+    // mostra quiz e pergunta
     quizContainer.style.display = 'block';
     btnExit.style.display = 'block';
     perguntaAtual = 0;
@@ -213,7 +231,9 @@ function selecionarOpcao(idx) {
   const p = perguntasSelecionadas[perguntaAtual];
   const isCorrect = idx === p.correta;
   if (isCorrect) {
-    score++;
+    const pesos = [1, 2, 3];
+    const peso = pesos[p.dificuldade] || 1;
+    score += peso;
   } else {
     contarErro();
     // Só mostra feedback se não for o terceiro erro
