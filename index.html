@@ -11,21 +11,44 @@
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/hand-pose-detection"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands"></script>
+  <style>
+    /* Estilo da tela de contagem */
+    #tela-contagem {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      font-size: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
   <h1 id="titulo-projeto">TapQuiz</h1>
+
   <!-- bloco de feedback (canto inferior direito) -->
   <div id="feedback-container" class="hidden">
     <span id="feedback-message"></span>
     <button id="btn-next">Próxima</button>
   </div>
+
   <video id="video" autoplay playsinline></video>
   <canvas id="canvas"></canvas>
+
   <div class="control-panel">
     <button id="btn-iniciar">Iniciar</button>
   </div>
+
   <p id="contador-dedos">Dedos levantados: 0</p>
+
   <!-- Quiz Container -->
   <div id="quiz-container" style="display:none;">
     <div id="header-container">
@@ -51,6 +74,7 @@
       <div id="dificuldade-block">Fácil</div>
     </div>
   </div>
+
   <!-- Dificuldade -->
   <div id="difficulty-container" style="display:none;">
     <h2 id="difficulty-title">Escolha a sua dificuldade</h2>
@@ -61,11 +85,13 @@
       <li data-nivel="3">Aleatório</li>
     </ul>
   </div>
+
   <!-- canto inferior esquerdo: Sair + marca TapQuiz -->
   <div id="bottom-left-bar">
     <button id="btn-exit">Sair</button>
     <!-- <span id="tapquiz-brand">TapQuiz</span>-->
   </div>
+
   <!-- Tela de resultados -->
   <div id="results-screen" class="hidden">
     <div id="results-content">
@@ -74,6 +100,12 @@
       <button id="btn-restart">Reiniciar</button>
     </div>
   </div>
+
+  <!-- Tela de contagem regressiva -->
+  <div id="tela-contagem" class="hidden">
+    <h2 id="contador-tela">3</h2>
+  </div>
+
   <script src="script.js"></script>
   <div id="finger-cursor"></div>
 </body>

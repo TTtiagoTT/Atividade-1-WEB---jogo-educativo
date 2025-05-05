@@ -33,10 +33,14 @@ const cronometro = document.getElementById('cronometro');
 const startPauseBtn = document.getElementById('startPause');
 const zerarBtn = document.getElementById('zerar');
 
+const telaContagem = document.getElementById('tela-contagem');
+const contadorTela = document.getElementById('contador-tela');
+
 let jogoIniciado = false;
 let perguntasSelecionadas = [];
 let perguntaAtual = 0;
 let score = 0;
+let iniciarTimer = null;
 
 let tempoRestante = 15;
 let intervaloTempo;
@@ -199,10 +203,25 @@ function escolherDificuldade(nivel) {
     diffItems.forEach(li => li.classList.remove('hover'));
 
     // mostra quiz e pergunta
-    quizContainer.style.display = 'block';
-    btnExit.style.display = 'block';
-    perguntaAtual = 0;
-    mostrarPergunta();
+    // Mostra a tela de contagem
+    telaContagem.classList.remove('hidden');
+
+    let count = 3;
+    contadorTela.textContent = count;
+
+    const intervalId = setInterval(() => {
+      count--;
+      if (count > 0) {
+        contadorTela.textContent = count;
+      } else {
+        clearInterval(intervalId);
+        telaContagem.classList.add('hidden');
+        quizContainer.style.display = 'block';
+        btnExit.style.display = 'block';
+        perguntaAtual = 0;
+        mostrarPergunta();
+      }
+    }, 1000);
   });
 }
 
@@ -448,7 +467,16 @@ async function main() {
       else {
         if (pontoSobre(x, y, btnIniciar)) {
           btnIniciar.classList.add('hover');
-          if (!jogoIniciado) setTimeout(iniciarJogo, timeDelay);
+          if (!iniciarTimer && !jogoIniciado) {
+            iniciarTimer = setTimeout(() => {
+              iniciarJogo();
+              iniciarTimer = null;
+            }, timeDelay);
+          }
+        } else {
+          btnIniciar.classList.remove('hover');
+          clearTimeout(iniciarTimer);
+          iniciarTimer = null;
         }
       }
     }
